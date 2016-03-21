@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Objc-palindrome-detector-001-prework-ios by Jeffchiucp</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Objc-palindrome-detector-001-prework-ios</h1>
+      <h2 class="project-tagline"></h2>
+      <a href="https://github.com/Jeffchiucp/objc-palindrome-detector-001-prework-ios" class="btn">View on GitHub</a>
+      <a href="https://github.com/Jeffchiucp/objc-palindrome-detector-001-prework-ios/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/Jeffchiucp/objc-palindrome-detector-001-prework-ios/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="code-along-palindrome-detector" class="anchor" href="#code-along-palindrome-detector" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Code-Along: Palindrome Detector</h1>
+
+<h1>
+<a id="added-solution-to-the-github" class="anchor" href="#added-solution-to-the-github" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Added solution to the GitHub</h1>
+
+<h2>
+<a id="objectives" class="anchor" href="#objectives" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Objectives</h2>
+
+<ol>
+<li>Declare methods in the <code>.h</code> header file using proper syntax.</li>
+<li>Define methods in the <code>.m</code> implementation file using proper syntax.</li>
+<li>Engage a problem to be solved in code by breaking the approach down into smaller steps.</li>
+<li>Solve each step sequentially in increasing levels of complexity.</li>
+<li>Check your code's behavior periodically with <code>NSLog()</code> as you progress in your solution.</li>
+<li>Call another method in the same file by using the <code>self</code> keyword.</li>
+</ol>
+
+<h3>
+<a id="optional" class="anchor" href="#optional" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Optional</h3>
+
+<ol>
+<li>Memorize some palindromes that you can use to impress your friends.</li>
+</ol>
+
+<h2>
+<a id="introduction" class="anchor" href="#introduction" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Introduction</h2>
+
+<p>A <a href="https://en.wikipedia.org/wiki/Palindrome">palindrome</a> is a word, phrase, or sentence whose letters are exactly mirrored around the center letter. Some examples include:</p>
+
+<p><em>racecar</em><br>
+<em>Bob</em><br>
+<em>Kanakanak</em>  (a city in Alaska)<br>
+<em>Aibohphobia</em>  (the fear of palindromes)<br>
+<em>never odd or even</em><br>
+<em>I prefer pi</em><br>
+<em>Flee to me, remote elf.</em><br>
+<em>Norma is as selfless as I am, Ron.</em><br>
+<em>No sir! Away! A papaya war is on.</em></p>
+
+<p>The qualification of a palindrome typically ignores spaces, punctuation, and capitalization, judging only the order of the letters themselves. Essentially, when a palindrome is reversed, its letters fall into the same order.</p>
+
+<p>In this code-along we're going to write a method that can judge whether or not a particular string qualifies as a palindrome. We're going to start with judging a single all-lowercase word, and then add complexity to allow the method to handle capitalization, spaces, and punctuation. We'll call this method <code>stringIsPalindrome:</code>.</p>
+
+<p>The easiest way to judge a palindrome is simply to compare it to its reverse. However, there is no string reversal method built into the Objective-C language so we'll have to write this functionality ourselves. We'll accomplish this by writing another method called <code>stringByReversingString:</code> that we can call from within the <code>stringIsPalindrome</code> method by using the <code>self</code> keyword as the recipient object.</p>
+
+<h2>
+<a id="instructions" class="anchor" href="#instructions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Instructions</h2>
+
+<p>Fork and clone this lab. </p>
+
+<h3>
+<a id="i-declare-methods-in-the-header-file" class="anchor" href="#i-declare-methods-in-the-header-file" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>I. Declare Methods In The Header File</h3>
+
+<p>Open the <code>objc-palindrome-detector.xcodeproj</code> file and navigate to the <code>FISAppDelegate.h</code> header file. You should see the following code:</p>
+
+<div class="highlight highlight-source-objc"><pre><span class="pl-c">//  FISAppDelegate.h</span>
+
+#<span class="pl-k">import</span> <span class="pl-s"><span class="pl-pds">&lt;</span>UIKit/UIKit.h<span class="pl-pds">&gt;</span></span>
+
+<span class="pl-k">@interface</span> <span class="pl-en">FISAppDelegate</span> : <span class="pl-e">UIResponder</span> &lt;UIApplicationDelegate&gt;
+
+<span class="pl-k">@property</span> (<span class="pl-k">strong</span>, <span class="pl-k">nonatomic</span>) UIWindow *window;
+
+<span class="pl-c">/**</span>
+<span class="pl-c"></span>
+<span class="pl-c"> * Declare your methods here.</span>
+<span class="pl-c"></span>
+<span class="pl-c"> */</span>
+
+<span class="pl-k">@end</span></pre></div>
+
+<p>Declare two methods inside the <code>@interface</code> section, between the <code>@property</code> statement and the <code>@end</code> statement:</p>
+
+<ul>
+<li>
+<code>stringIsPalindrome:</code> which takes one <code>NSString</code> argument called <code>string</code> and returns a <code>BOOL</code>, and</li>
+<li>
+<code>stringByReversingString:</code> which takes one <code>NSString</code> argument called <code>string</code> and returns an <code>NSString</code>.</li>
+</ul>
+
+<p>After declaring these methods, your <code>FISAppDelegate.h</code> header file should look something like this:</p>
+
+<div class="highlight highlight-source-objc"><pre><span class="pl-c">//  FISAppDelegate.h</span>
+
+#<span class="pl-k">import</span> <span class="pl-s"><span class="pl-pds">&lt;</span>UIKit/UIKit.h<span class="pl-pds">&gt;</span></span>
+
+<span class="pl-k">@interface</span> <span class="pl-en">FISAppDelegate</span> : <span class="pl-e">UIResponder</span> &lt;UIApplicationDelegate&gt;
+
+<span class="pl-k">@property</span> (<span class="pl-k">strong</span>, <span class="pl-k">nonatomic</span>) UIWindow *window;
+
+- (<span class="pl-k">BOOL</span>)<span class="pl-en">stringIsPalindrome</span><span class="pl-en">:</span>(<span class="pl-c1">NSString</span> *)<span class="pl-smi">string</span>;
+
+- (<span class="pl-c1">NSString</span> *)<span class="pl-en">stringByReversingString</span><span class="pl-en">:</span>(<span class="pl-c1">NSString</span> *)<span class="pl-smi">string</span>;
+
+<span class="pl-k">@end</span></pre></div>
+
+<p>Great!</p>
+
+<h3>
+<a id="ii-define-method-implementations" class="anchor" href="#ii-define-method-implementations" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>II. Define Method Implementations</h3>
+
+<p>Now, navigate to the <code>FISAppDelegate.m</code> implementation file. <em>Below</em> the ending curly brace of the <code>application:didFinishLaunchingWithOptions:</code> method, but <em>above</em> the <code>@end</code> statement, use autocomplete to define both methods with default returns:</p>
+
+<ul>
+<li>
+<code>stringIsPalindrome:</code> should <code>return NO;</code>, and</li>
+<li>
+<code>stringByReversingString:</code> should <code>return nil;</code>.</li>
+</ul>
+
+<p>Your <code>FISAppDelegate.m</code> file should now look something like this:</p>
+
+<div class="highlight highlight-source-objc"><pre><span class="pl-c">//  FISAppDelegate.m</span>
+
+#<span class="pl-k">import</span> <span class="pl-s"><span class="pl-pds">"</span>FISAppDelegate.h<span class="pl-pds">"</span></span>
+
+<span class="pl-k">@implementation</span> <span class="pl-en">FISAppDelegate</span>
+
+- (<span class="pl-k">BOOL</span>)<span class="pl-en">application</span><span class="pl-en">:</span>(UIApplication *)<span class="pl-smi">application</span> <span class="pl-en">didFinishLaunchingWithOptions</span><span class="pl-en">:</span>(<span class="pl-c1">NSDictionary</span> *)<span class="pl-smi">launchOptions</span> {
+    <span class="pl-c">// Override point for customization after application launch.</span>
+
+    <span class="pl-c">/**</span>
+<span class="pl-c"></span>
+<span class="pl-c">     * Write your check code here.</span>
+<span class="pl-c"></span>
+<span class="pl-c">     */</span>
+
+    <span class="pl-c">// do not alter</span>
+    <span class="pl-k">return</span> <span class="pl-c1">YES</span>;  <span class="pl-c">//</span>
+}   <span class="pl-c">///////////////</span>
+
+<span class="pl-c">/**</span>
+<span class="pl-c"></span>
+<span class="pl-c"> * Implement your methods here.</span>
+<span class="pl-c"></span>
+<span class="pl-c"> */</span>
+
+- (<span class="pl-k">BOOL</span>)<span class="pl-en">stringIsPalindrome</span><span class="pl-en">:</span>(<span class="pl-c1">NSString</span> *)<span class="pl-smi">string</span> {
+   <span class="pl-k">return</span> <span class="pl-c1">NO</span>;
+}
+
+- (<span class="pl-c1">NSString</span> *)<span class="pl-en">stringByReversingString</span><span class="pl-en">:</span>(<span class="pl-c1">NSString</span> *)<span class="pl-smi">string</span> {
+    <span class="pl-k">return</span> <span class="pl-c1">nil</span>;
+}
+
+<span class="pl-k">@end</span></pre></div>
+
+<h3>
+<a id="iii-reversing-a-string" class="anchor" href="#iii-reversing-a-string" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>III. Reversing a String</h3>
+
+<p>Because the logic of our <code>stringIsPalindrome:</code> method depends on our ability to reverse a string, let's start by writing out the <code>stringByReversingString:</code> method that we declared. Our goal is take whatever string variable is passed into the <code>string</code> argument (also "parameter") and return its exact reverse at the end of the method.</p>
+
+<p>How would we approach this goal with a word or sentence written on paper? Couldn't we simply start at the end of the word or sentence, moving backwards while copying each letter onto a new line? Of course we could!</p>
+
+<p>How could we represent this process in code? Well, we already know that strings are made up of individual characters that are arranged by index. So, could we simply start with the character at the string's highest index and work backwards, copying each character into a new string? Of course we could!</p>
+
+<p><strong>Advanced:</strong> <em>There are more efficient ways to reverse a string, but this is perhaps the simplest one to understand.</em></p>
+
+<p>One possible implementation of this process in Objective-C is written below:</p>
+
+<div class="highlight highlight-source-objc"><pre>- (<span class="pl-c1">NSString</span> *)stringByReversingString:(<span class="pl-c1">NSString</span> *)string {
+
+    <span class="pl-c1">NSString</span> *result = <span class="pl-s"><span class="pl-pds">@"</span><span class="pl-pds">"</span></span>;
+
+    <span class="pl-k">for</span> (<span class="pl-k">NSUInteger</span> i = [string <span class="pl-c1">length</span>]; i &gt; <span class="pl-c1">0</span>; i--) {
+        <span class="pl-k">NSUInteger</span> <span class="pl-c1">index</span> = i - <span class="pl-c1">1</span>;
+        <span class="pl-c1">unichar</span> c = [string <span class="pl-c1">characterAtIndex:</span><span class="pl-c1">index</span>];
+        result = [result <span class="pl-c1">stringByAppendingFormat:</span><span class="pl-s"><span class="pl-pds">@"</span><span class="pl-c1">%C</span><span class="pl-pds">"</span></span>, c];
+    }
+
+    <span class="pl-k">return</span> result;
+}</pre></div>
+
+<p>Let's walk through what this method is doing:</p>
+
+<ol>
+<li>Creating a new <code>NSString</code> variable called <code>result</code> that will be the container for the reversed string that will get assembled one character at a time.</li>
+<li>Declaring a <code>for</code> loop whose counter begins at the size of the string's length and counts down (decrements) to <code>1</code> (<em>remember that the length will always be one more than the maximum index</em>).</li>
+<li>Defines an integer called <code>index</code> that is one less than the current value of <code>i</code>. This is to solve the off-by-one difference between the value of the string's <code>length</code> and the value of its highest index.</li>
+<li>Finds the next character (<code>unichar c</code>) to be copied by using the <code>index</code> integer to call the <code>characterAtIndex:</code> method on the argument <code>string</code>.</li>
+<li>Appends that character (<code>c</code>) to the end of the <code>result</code> string. This uses the <code>unichar</code> format specifier (<code>%C</code>) to interpolate the character variable <code>c</code> into a string that can be appended normally.</li>
+<li>After the loop counts down to <code>1</code>, the <code>result</code> string should be complete, and it is returned at the end of the method.</li>
+</ol>
+
+<p>Once you have a conceptual understanding of this implementation, copy it into your code.</p>
+
+<h3>
+<a id="iv-checking-a-method-return" class="anchor" href="#iv-checking-a-method-return" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>IV. Checking a Method Return</h3>
+
+<p>Let's check that our new <code>stringByReversingString:</code> method works by calling it from the <code>application:didFinishLaunchingWithOptions:</code> method and <code>NSLog()</code>ing the return! We can call our new method from within the same file by sending a message to the <code>self</code> keyword.</p>
+
+<ol>
+<li>Inside <code>application:didFinishLaunchingWithOptions:</code>, create an <code>NSString</code> variable called <code>palindrome</code> and set it to the string literal <code>@"palindrome"</code>:
+
+<ul>
+<li><code>NSString *palindrome = @"palindrome";</code></li>
+</ul>
+</li>
+<li>Now create another <code>NSString</code> variable called <code>reversed</code> and use it to capture the return of calling <code>stringByReversingString:</code> on <code>self</code> with <code>palindrome</code> submitted as the method argument:
+
+<ul>
+<li><code>NSString *reversed = [self stringByReversingString:palindrome];</code></li>
+</ul>
+</li>
+<li>Finally, print <code>palindrome</code> and <code>reversed</code> to the console to inspect the method:
+
+<ul>
+<li><code>NSLog(@"%@ : %@", palindrome, reversed);</code></li>
+</ul>
+</li>
+</ol>
+
+<p>This should print: <code>palindrome : emordnilap</code>.</p>
+
+<p>Hooray! Our first method works!</p>
+
+<h3>
+<a id="v-detecting-a-palindrome" class="anchor" href="#v-detecting-a-palindrome" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>V. Detecting a Palindrome</h3>
+
+<p>Now the we've verified that our string reversal method works, we can get to work on the implementation of our <code>stringIsPalindrome:</code> method.</p>
+
+<p>In our first pass at this method, let's use the simplest case for our first example: an all-lowercase single word such as "<em>racecar</em>". We'll add complexity to our method later. For now, let's just make sure we can get the core of the logic down.</p>
+
+<p>Let's conceptualize the steps we need to take:</p>
+
+<ul>
+<li>We need to get the reverse of the string we're testing,</li>
+<li>then we can compare the original string to its reverse,</li>
+<li>then we can return the result of that comparison, which will be a <code>BOOL</code>.</li>
+</ul>
+
+<p>That sounds like a solid plan! Now let's write the implementation:</p>
+
+<ol>
+<li>Create a new <code>NSString</code> variable called <code>reverse</code> and use it to capture the return of calling <code>stringByReversingString:</code> on <code>self</code> with the <code>string</code> argument variable submitted as the method argument:
+
+<ul>
+<li><code>NSString *reverse = [self stringByReversingString:string];</code></li>
+</ul>
+</li>
+<li>Create a new <code>BOOL</code> variable called <code>stringIsEqualToReverse</code> and use it to capture the return of calling the <code>isEqualToString:</code> method on <code>string</code> with <code>reverse</code> submitted as the argument:
+
+<ul>
+<li><code>BOOL stringIsEqualToReverse = [string isEqualToString:reverse];</code></li>
+</ul>
+</li>
+<li>Return the <code>stringIsEqualToReverse</code> variable to end the method implementation:
+
+<ul>
+<li><code>return stringIsEqualToReverse;</code></li>
+</ul>
+</li>
+</ol>
+
+<p>Your method implementation should look something like this:</p>
+
+<div class="highlight highlight-source-objc"><pre>- (<span class="pl-k">BOOL</span>)stringIsPalindrome:(<span class="pl-c1">NSString</span> *)string {
+
+    <span class="pl-c1">NSString</span> *reverse = [<span class="pl-v">self</span> <span class="pl-c1">stringByReversingString:</span>string];
+
+    <span class="pl-k">BOOL</span> stringIsEqualToReverse = [string <span class="pl-c1">isEqualToString:</span>reverse];
+
+    <span class="pl-k">return</span> stringIsEqualToReverse;
+}</pre></div>
+
+<h3>
+<a id="vi-check-the-implementation" class="anchor" href="#vi-check-the-implementation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>VI. Check The Implementation</h3>
+
+<p>Just like we checked the <code>stringByReversingString:</code> method before, let's use local variables and an <code>NSLog()</code> within the <code>application:didFinishLaunchingWithOptions:</code> method to check that our method can handle the case of "<em>racecar</em>".</p>
+
+<ol>
+<li>Move up to the <code>application:didFinishLaunchingWithOptions:</code> method. Create a new <code>NSString</code> variable called <code>racecar</code> and assign it to the string literal <code>@"racecar"</code>:
+
+<ul>
+<li><code>NSString *racecar = @"racecar";</code></li>
+</ul>
+</li>
+<li>Now, create a new <code>BOOL</code> variable called <code>racecarIsPalindrome</code> and use it to capture the return of calling <code>stringIsPalindrome:</code> on <code>self</code> with <code>racecar</code> submitted as the method argument:
+
+<ul>
+<li><code>BOOL racecarIsPalindrome = [self stringIsPalindrome:racecar];</code></li>
+</ul>
+</li>
+<li>Finally, <code>NSLog()</code> the variables together to view the result:
+
+<ul>
+<li><code>NSLog(@"%d : %@", racecarIsPalindrome, racecar);</code></li>
+</ul>
+</li>
+</ol>
+
+<p>This should print: <code>1 : racecar</code>, meaning that "<em>racecar</em>" <strong>is</strong> a palindrome.</p>
+
+<p>Now, let's check a string that <strong>isn't</strong> a palindrome. Reuse the <code>palindrome</code> string to verify that <code>stringIsPalindrome:</code> returns "NO" for a string that doesn't match its reverse.</p>
+
+<ol>
+<li>Create a new <code>BOOL</code> variable called <code>palindromeIsPalindrome</code> and use it to capture the return of calling <code>stringIsPalindrome:</code> on <code>self</code> with <code>palindrome</code> submitted as the method argument:
+
+<ul>
+<li><code>BOOL palindromeIsPalindrome = [self stringIsPalindrome:palindrome];</code></li>
+</ul>
+</li>
+<li>Now, <code>NSLog()</code> these variables together to view the result:
+
+<ul>
+<li><code>NSLog(@"%d : %@", palindromeIsPalindrome, palindrome);</code></li>
+</ul>
+</li>
+</ol>
+
+<p>This should print: <code>0 : palindrome</code>, meaning that "<em>palindrome</em>" is <strong>not</strong> a palindrome (<code>BOOL ironic = YES;</code>).</p>
+
+<h2>
+<a id="adding-complexity" class="anchor" href="#adding-complexity" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Adding Complexity</h2>
+
+<h3>
+<a id="vii-ignoring-typecase" class="anchor" href="#vii-ignoring-typecase" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>VII. Ignoring Typecase</h3>
+
+<p>Let's improve our <code>stringIsPalindrome:</code> method to allow it to handle uppercase letters in strings. Right now, evaluating the actual palindromes "<em>Bob</em>", "<em>Kanakanak</em>", and "<em>Aibohphobia</em>" will all return "NO" because they contain a capital letter. Verify this by adding these checks into the <code>application:didFinishLaunchingWithOptions:</code> method in the same style as evaluating "<em>racecar</em>":</p>
+
+<p><strong>Note:</strong> <em>We suggest you get the practice of typing these lines out manually. Use the code block below as a guide without copy/pasting from it.</em></p>
+
+<div class="highlight highlight-source-objc"><pre><span class="pl-c">// within application:didFinishLaunchingWithOptions:</span>
+
+<span class="pl-c">// single word, with uppercase</span>
+<span class="pl-c1">NSString</span> *bob = <span class="pl-s"><span class="pl-pds">@"</span>Bob<span class="pl-pds">"</span></span>;
+<span class="pl-k">BOOL</span> bobIsPalindrome = [<span class="pl-v">self</span> <span class="pl-c1">stringIsPalindrome:</span>bob];
+<span class="pl-c1">NSLog</span>(<span class="pl-s"><span class="pl-pds">@"</span><span class="pl-c1">%d</span> : <span class="pl-c1">%@</span><span class="pl-pds">"</span></span>, bobIsPalindrome, bob);
+
+<span class="pl-c1">NSString</span> *kanakanak = <span class="pl-s"><span class="pl-pds">@"</span>Kanakanak<span class="pl-pds">"</span></span>;
+<span class="pl-k">BOOL</span> kanakanakIsPalindrome = [<span class="pl-v">self</span> <span class="pl-c1">stringIsPalindrome:</span>kanakanak];
+<span class="pl-c1">NSLog</span>(<span class="pl-s"><span class="pl-pds">@"</span><span class="pl-c1">%d</span> : <span class="pl-c1">%@</span><span class="pl-pds">"</span></span>, kanakanakIsPalindrome, kanakanak);
+
+<span class="pl-c1">NSString</span> *aibohphobia = <span class="pl-s"><span class="pl-pds">@"</span>Aibohphobia<span class="pl-pds">"</span></span>;
+<span class="pl-k">BOOL</span> aibohphobiaIsPalindrome = [<span class="pl-v">self</span> <span class="pl-c1">stringIsPalindrome:</span>aibohphobia];
+<span class="pl-c1">NSLog</span>(<span class="pl-s"><span class="pl-pds">@"</span><span class="pl-c1">%d</span> : <span class="pl-c1">%@</span><span class="pl-pds">"</span></span>, aibohphobiaIsPalindrome, aibohphobia);</pre></div>
+
+<p>Running the program now should print these three lines with zeroes:</p>
+
+<pre><code>0 : Bob
+0 : Kanakanak
+0 : Aibohphobia
+</code></pre>
+
+<p>The implementation of handling these additional cases in <code>stringIsPalindrome:</code> is relatively simple: we just need to lowercase the <code>string</code> argument before we evaluate it, right? Let's try it:</p>
+
+<p>1 — Insert a statement that creates a new <code>NSString</code> variable called <code>lowercase</code> use to capture the return of calling the <code>lowercase</code> method on the <code>string</code> argument. Then refactor the string comparison to evaluate <code>lowercase</code> against <code>reverse</code>:</p>
+
+<div class="highlight highlight-source-objc"><pre>- (<span class="pl-k">BOOL</span>)stringIsPalindrome:(<span class="pl-c1">NSString</span> *)string {
+
+    <span class="pl-c1">NSString</span> *reverse = [<span class="pl-v">self</span> <span class="pl-c1">stringByReversingString:</span>string];
+
+    <span class="pl-c1">NSString</span> *lowercase = [string <span class="pl-c1">lowercaseString</span>];
+
+    <span class="pl-k">BOOL</span> stringIsEqualToReverse = [lowercase <span class="pl-c1">isEqualToString:</span>reverse];
+
+    <span class="pl-k">return</span> stringIsEqualToReverse;
+}</pre></div>
+
+<p>Now, run the program again. It will still print our three palindromes with zeroes:</p>
+
+<pre><code>0 : Bob
+0 : Kanakanak
+0 : Aibohphobia
+</code></pre>
+
+<p>What did we do wrong? Let's add an <code>NSLog()</code> right before the comparison to inspect the strings:</p>
+
+<div class="highlight highlight-source-objc"><pre>- (<span class="pl-k">BOOL</span>)stringIsPalindrome:(<span class="pl-c1">NSString</span> *)string {
+
+    <span class="pl-c1">NSString</span> *reverse = [<span class="pl-v">self</span> <span class="pl-c1">stringByReversingString:</span>string];
+
+    <span class="pl-c1">NSString</span> *lowercase = [string <span class="pl-c1">lowercaseString</span>];
+
+    <span class="pl-c1">NSLog</span>(<span class="pl-s"><span class="pl-pds">@"</span>lowercase: <span class="pl-c1">%@</span>, reverse: <span class="pl-c1">%@</span><span class="pl-pds">"</span></span>, lowercase, reverse);
+    <span class="pl-k">BOOL</span> stringIsEqualToReverse = [lowercase <span class="pl-c1">isEqualToString:</span>reverse];
+
+    <span class="pl-k">return</span> stringIsEqualToReverse;
+}</pre></div>
+
+<p>Running the program will cause this to print:</p>
+
+<pre><code>lowercase: bob, reverse: boB
+0 : Bob
+lowercase: kanakanak, reverse: kanakanaK
+0 : Kanakanak
+lowercase: aibohphobia, reverse: aibohphobiA
+0 : Aibohphobia
+</code></pre>
+
+<p>It looks like we reversed the string <em>before</em> we lowercased it, which means that we're comparing the lowercased version to a reversed version that contains an uppercase letter in it. This causes the comparison to fail.</p>
+
+<p>To fix this, we should be move the statement creating <code>lowercase</code> to above the statement creating the <code>reverse</code> string, and refactor <code>reverse</code>'s assignment to use <code>lowercase</code> as its method argument instead of <code>string</code>:</p>
+
+<div class="highlight highlight-source-objc"><pre>- (<span class="pl-k">BOOL</span>)stringIsPalindrome:(<span class="pl-c1">NSString</span> *)string {
+
+    <span class="pl-c1">NSString</span> *lowercase = [string <span class="pl-c1">lowercaseString</span>];
+
+    <span class="pl-c1">NSString</span> *reverse = [<span class="pl-v">self</span> <span class="pl-c1">stringByReversingString:</span>lowercase];
+
+    <span class="pl-c1">NSLog</span>(<span class="pl-s"><span class="pl-pds">@"</span>lowercase: <span class="pl-c1">%@</span>, reverse: <span class="pl-c1">%@</span><span class="pl-pds">"</span></span>, lowercase, reverse);
+    <span class="pl-k">BOOL</span> stringIsEqualToReverse = [lowercase <span class="pl-c1">isEqualToString:</span>reverse];
+
+    <span class="pl-k">return</span> stringIsEqualToReverse;
+}</pre></div>
+
+<p>Now running the program should be able to handle the checks with our capitalized strings, and print them with <code>1</code>s:</p>
+
+<pre><code>lowercase: bob, reverse: bob
+1 : Bob
+lowercase: kanakanak, reverse: kanakanak
+1 : Kanakanak
+lowercase: aibohphobia, reverse: aibohphobia
+1 : Aibohphobia
+</code></pre>
+
+<p>Awesome! Now we can handle proper nouns properly! Delete the <code>NSLog()</code> from the method before moving on; we don't need it anymore.</p>
+
+<h3>
+<a id="viii-removing-spaces" class="anchor" href="#viii-removing-spaces" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>VIII. Removing Spaces</h3>
+
+<p>Since phrases can qualify as a palindromes, let's improve our <code>stringIsPalindrome:</code> method to evaluate strings that contain spaces. Let's start by adding some new checks to the <code>application:didFinishLaunchingWithOptions:</code> method for the phrases "<em>this is not a palindrome</em>" (as a control check), "<em>never odd or even</em>", and "<em>I prefer pi</em>":</p>
+
+<p><strong>Note:</strong> <em>We suggest you get the practice of typing these lines out manually. Use the code block below as a guide without copy/pasting from it.</em></p>
+
+<div class="highlight highlight-source-objc"><pre><span class="pl-c">//within application:didFinishLaunchingWithOptions:</span>
+
+<span class="pl-c1">NSString</span> *notAPalindrome = <span class="pl-s"><span class="pl-pds">@"</span>this is not a palindrome<span class="pl-pds">"</span></span>;
+<span class="pl-k">BOOL</span> notAPalindromeIsPalindrome = [<span class="pl-v">self</span> <span class="pl-c1">stringIsPalindrome:</span>notAPalindrome];
+<span class="pl-c1">NSLog</span>(<span class="pl-s"><span class="pl-pds">@"</span><span class="pl-c1">%d</span> : <span class="pl-c1">%@</span><span class="pl-pds">"</span></span>, notAPalindromeIsPalindrome, notAPalindrome);
+
+<span class="pl-c1">NSString</span> *neverOdd = <span class="pl-s"><span class="pl-pds">@"</span>never odd or even<span class="pl-pds">"</span></span>;
+<span class="pl-k">BOOL</span> neverOddIsPalindrome = [<span class="pl-v">self</span> <span class="pl-c1">stringIsPalindrome:</span>neverOdd];
+<span class="pl-c1">NSLog</span>(<span class="pl-s"><span class="pl-pds">@"</span><span class="pl-c1">%d</span> : <span class="pl-c1">%@</span><span class="pl-pds">"</span></span>, neverOddIsPalindrome, neverOdd);
+
+<span class="pl-c1">NSString</span> *iPreferPi = <span class="pl-s"><span class="pl-pds">@"</span>I prefer pi<span class="pl-pds">"</span></span>;
+<span class="pl-k">BOOL</span> iPreferPiIsPalindrome = [<span class="pl-v">self</span> <span class="pl-c1">stringIsPalindrome:</span>iPreferPi];
+<span class="pl-c1">NSLog</span>(<span class="pl-s"><span class="pl-pds">@"</span><span class="pl-c1">%d</span> : <span class="pl-c1">%@</span><span class="pl-pds">"</span></span>, iPreferPiIsPalindrome, iPreferPi);</pre></div>
+
+<p>Running the program should print all three phrases with zeroes:</p>
+
+<pre><code>0 : this is not a palindrome
+0 : never odd or even
+0 : I prefer pi
+</code></pre>
+
+<p>Now let's edit our <code>stringIsPalindrome:</code> method again by adding logic at the top that removes the spaces. We can accomplish this by using the <code>stringByReplacingOccurrencesOfString:withString:</code> (say that 10 times fast).</p>
+
+<p>Create a new <code>NSString</code> variable called <code>spaceless</code> and use it to capture the return of calling <code>stringByReplacingOccurrencesOfString:withString:</code> on the <code>string</code> argument variable; the first method argument should be a string literal containing a single space (<code>@" "</code>) and the second method argument should be an empty string literal (<code>@""</code>).</p>
+
+<p>Refactor the rest of the method implementation to use <code>spaceless</code> instead of <code>string</code> (this should only affect one statement):</p>
+
+<div class="highlight highlight-source-objc"><pre>- (<span class="pl-k">BOOL</span>)stringIsPalindrome:(<span class="pl-c1">NSString</span> *)string {
+
+    <span class="pl-c1">NSString</span> *spaceless = [string <span class="pl-c1">stringByReplacingOccurrencesOfString:</span><span class="pl-s"><span class="pl-pds">@"</span> <span class="pl-pds">"</span></span> <span class="pl-c1">withString:</span><span class="pl-s"><span class="pl-pds">@"</span><span class="pl-pds">"</span></span>];
+
+    <span class="pl-c1">NSString</span> *lowercase = [spaceless <span class="pl-c1">lowercaseString</span>];
+
+    <span class="pl-c1">NSString</span> *reverse = [<span class="pl-v">self</span> <span class="pl-c1">stringByReversingString:</span>lowercase];
+
+    <span class="pl-k">BOOL</span> stringIsEqualToReverse = [lowercase <span class="pl-c1">isEqualToString:</span>reverse];
+
+    <span class="pl-k">return</span> stringIsEqualToReverse;
+}</pre></div>
+
+<p>Now let's run the program again. Our palindrome phrases should now print with <code>1</code>s:</p>
+
+<pre><code>0 : this is not a palindrome
+1 : never odd or even
+1 : I prefer pi
+</code></pre>
+
+<h3>
+<a id="ix-removing-punctuation" class="anchor" href="#ix-removing-punctuation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>IX. Removing Punctuation</h3>
+
+<p>For our final trick, let's add the functionality to our <code>stringIsPalindrome:</code> method so that can accommodate palindromes that are full sentences. (That means punctuation!) Let's start by adding some checks by utilizing the palindrome sentences "<em>Flee to me, remote elf.</em>", "<em>Norma is as selfless as I am, Ron.</em>", and "<em>No sir! Away! A papaya war is on.</em>":</p>
+
+<p><strong>Note:</strong> <em>We suggest you get the practice of typing these lines out manually. Use the code block below as a guide without copy/pasting from it.</em></p>
+
+<div class="highlight highlight-source-objc"><pre><span class="pl-c">//within application:didFinishLaunchingWithOptions:</span>
+
+<span class="pl-c">// full sentences with punctuation and capitalization</span>
+<span class="pl-c1">NSString</span> *fleeToMe = <span class="pl-s"><span class="pl-pds">@"</span>Flee to me, remote elf.<span class="pl-pds">"</span></span>;
+<span class="pl-k">BOOL</span> fleeToMeIsPalindrome = [<span class="pl-v">self</span> <span class="pl-c1">stringIsPalindrome:</span>fleeToMe];
+<span class="pl-c1">NSLog</span>(<span class="pl-s"><span class="pl-pds">@"</span><span class="pl-c1">%d</span> : <span class="pl-c1">%@</span><span class="pl-pds">"</span></span>, fleeToMeIsPalindrome, fleeToMe);
+
+<span class="pl-c1">NSString</span> *norma = <span class="pl-s"><span class="pl-pds">@"</span>Norma is as selfless as I am, Ron.<span class="pl-pds">"</span></span>;
+<span class="pl-k">BOOL</span> normaIsPalindrome = [<span class="pl-v">self</span> <span class="pl-c1">stringIsPalindrome:</span>norma];
+<span class="pl-c1">NSLog</span>(<span class="pl-s"><span class="pl-pds">@"</span><span class="pl-c1">%d</span> : <span class="pl-c1">%@</span><span class="pl-pds">"</span></span>, normaIsPalindrome, norma);
+
+<span class="pl-c1">NSString</span> *papayaWar = <span class="pl-s"><span class="pl-pds">@"</span>No sir! Away! A papaya war is on.<span class="pl-pds">"</span></span>;
+<span class="pl-k">BOOL</span> papayaWarIsPalindrome = [<span class="pl-v">self</span> <span class="pl-c1">stringIsPalindrome:</span>papayaWar];
+<span class="pl-c1">NSLog</span>(<span class="pl-s"><span class="pl-pds">@"</span><span class="pl-c1">%d</span> : <span class="pl-c1">%@</span><span class="pl-pds">"</span></span>, papayaWarIsPalindrome, papayaWar);</pre></div>
+
+<p>Running the program now should print these sentences with zeroes:</p>
+
+<pre><code>0 : Flee to me, remote elf.
+0 : Norma is as selfless as I am, Ron.
+0 : No sir! Away! A papaya war is on.
+</code></pre>
+
+<p>We can remove the punctuation characters from the <code>string</code> argument variable by using <code>stringByReplacingOccurrencesOfString:withString:</code> again. If we collect our punctuation characters into an array, we can iterate over each punctuation string with a <code>for</code> loop, replacing every punctuation character in the string with an empty string instead. Let's do this now at the top of the <code>stringIsPalindrome:</code> method implementation:</p>
+
+<ol>
+<li>Create a new <code>NSArray</code> called <code>punctuations</code> and assign it to an array literal containing the string literals for the six common punctuation characters <code>.</code>, <code>,</code>, <code>!</code>, <code>?</code>, <code>:</code>, and <code>;</code> (period, comma, exclamation point, question mark, colon, and semicolon):
+
+<ul>
+<li><code>NSArray *punctuations = @[ @".", @",", @"!", @"?", @":", @";" ];</code></li>
+</ul>
+</li>
+<li>Create a new <code>NSString</code> variable called <code>withoutPunctuation</code> and assign to a copy of the <code>string</code> argument variable:
+
+<ul>
+<li><code>NSString *withoutPunctuation = [string copy];</code></li>
+</ul>
+</li>
+<li>Start a <code>for</code> loop that iterates over the <code>punctuations</code> array:
+
+<ul>
+<li><code>for (NSUInteger i = 0; i &lt; [punctuations count]; i++) {...}</code></li>
+</ul>
+</li>
+<li>Within the <code>for</code> loop, create new <code>NSString</code> variable called <code>punctuation</code> and assign it to the subscript of the <code>punctuations</code> array using the current value of <code>i</code>:
+
+<ul>
+<li><code>NSString *punctuation = punctuations[i];</code></li>
+</ul>
+</li>
+<li>Still within the <code>for</code> loop, reassign the <code>withoutPunctuation</code> variable to capture a call of the <code>stringByReplacingOccurrencesOfString:withString:</code> method on the <code>withoutPunctuation</code> variable (itself). The first argument should be the <code>punctuation</code> string variable, and the second argument should be an empty string literal (<code>@""</code>):
+
+<ul>
+<li><code>withoutPunctuation = [withoutPunctuation stringByReplacingOccurrencesOfString:punctuation withString:@""];</code></li>
+</ul>
+</li>
+<li>Refactor the creation of the <code>spaceless</code> variable to use <code>withoutPunctuation</code> instead of the <code>string</code> argument variable:
+
+<ul>
+<li><code>NSString *spaceless = [withoutPunctuation stringByReplacingOccurrencesOfString:@" " withString:@""];</code></li>
+</ul>
+</li>
+</ol>
+
+<p>The <code>stringIsPalindrome:</code> should now look something like this:</p>
+
+<div class="highlight highlight-source-objc"><pre>- (<span class="pl-k">BOOL</span>)stringIsPalindrome:(<span class="pl-c1">NSString</span> *)string {
+
+    <span class="pl-c1">NSArray</span> *punctuations = @[ <span class="pl-s"><span class="pl-pds">@"</span>.<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">@"</span>,<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">@"</span>!<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">@"</span>?<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">@"</span>:<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">@"</span>;<span class="pl-pds">"</span></span> ];
+    <span class="pl-c1">NSString</span> *withoutPunctuation = [string <span class="pl-c1">copy</span>];
+
+    <span class="pl-k">for</span> (<span class="pl-k">NSUInteger</span> i = <span class="pl-c1">0</span>; i &lt; [punctuations <span class="pl-c1">count</span>]; i++) {
+        <span class="pl-c1">NSString</span> *punctuation = punctuations[i];
+        withoutPunctuation = [withoutPunctuation <span class="pl-c1">stringByReplacingOccurrencesOfString:</span>punctuation <span class="pl-c1">withString:</span><span class="pl-s"><span class="pl-pds">@"</span><span class="pl-pds">"</span></span>];
+    }
+
+    <span class="pl-c1">NSString</span> *spaceless = [withoutPunctuation <span class="pl-c1">stringByReplacingOccurrencesOfString:</span><span class="pl-s"><span class="pl-pds">@"</span> <span class="pl-pds">"</span></span> <span class="pl-c1">withString:</span><span class="pl-s"><span class="pl-pds">@"</span><span class="pl-pds">"</span></span>];
+
+    <span class="pl-c1">NSString</span> *lowercase = [spaceless <span class="pl-c1">lowercaseString</span>];
+
+    <span class="pl-c1">NSString</span> *reverse = [<span class="pl-v">self</span> <span class="pl-c1">stringByReversingString:</span>lowercase];
+
+    <span class="pl-k">BOOL</span> stringIsEqualToReverse = [lowercase <span class="pl-c1">isEqualToString:</span>reverse];
+
+    <span class="pl-k">return</span> stringIsEqualToReverse;
+}</pre></div>
+
+<p>Run the program to see how well our method handles the palindrome sentences. It should print all three of them now with <code>1</code>s:</p>
+
+<pre><code>1 : Flee to me, remote elf.
+1 : Norma is as selfless as I am, Ron.
+1 : No sir! Away! A papaya war is on.
+</code></pre>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/Jeffchiucp/objc-palindrome-detector-001-prework-ios">Objc-palindrome-detector-001-prework-ios</a> is maintained by <a href="https://github.com/Jeffchiucp">Jeffchiucp</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
